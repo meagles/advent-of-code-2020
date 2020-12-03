@@ -6,12 +6,26 @@ def open_puzzle_input(day):
 
 if __name__ == "__main__":
 
-	day = 2
-	puzzle = 2
+	day = 3
+	puzzle = 1
 
 	input = open_puzzle_input(day)
 
-	if day == 2:
+	if day == 3:
+		x_pos = 0
+		y_pos = 0
+		x_vel = 3
+		y_vel = 1
+		trees_encountered = 0
+		for line in input:
+			if x_pos >= len(line):
+				x_pos = x_pos - len(line)
+			if line[x_pos] == "#":
+				trees_encountered = trees_encountered + 1
+			x_pos = x_pos + x_vel
+		print(str(trees_encountered)+" trees encountered")
+
+	elif day == 2:
 		valid_passwords = 0
 		for line in input:
 			line_parts = line.split(' ')
