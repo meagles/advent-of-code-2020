@@ -7,23 +7,37 @@ def open_puzzle_input(day):
 if __name__ == "__main__":
 
 	day = 3
-	puzzle = 1
+	puzzle = 2
 
 	input = open_puzzle_input(day)
 
 	if day == 3:
-		x_pos = 0
-		y_pos = 0
-		x_vel = 3
-		y_vel = 1
-		trees_encountered = 0
-		for line in input:
-			if x_pos >= len(line):
-				x_pos = x_pos - len(line)
-			if line[x_pos] == "#":
-				trees_encountered = trees_encountered + 1
-			x_pos = x_pos + x_vel
-		print(str(trees_encountered)+" trees encountered")
+		
+		if puzzle == 1:
+			velocities = [[3,1]]
+		elif puzzle == 2:
+			velocities = [[1,1],[3,1],[5,1],[7,1],[1,2]]
+			mult_product = 1
+
+		for velocity in velocities:
+			x_pos = 0
+			y_pos = 0
+			x_vel = velocity[0]
+			y_vel = velocity[1]
+			print("Doing velocity: "+str(x_vel)+","+str(y_vel))
+			trees_encountered = 0
+			for row_num in range(0, len(input), y_vel):
+				line = input[row_num]
+				if x_pos >= len(line):
+					x_pos = x_pos - len(line)
+				if line[x_pos] == "#":
+					trees_encountered = trees_encountered + 1
+				x_pos = x_pos + x_vel
+			if puzzle == 2:
+				mult_product = mult_product * trees_encountered
+			print(str(trees_encountered)+" trees encountered")
+		if puzzle == 2:
+			print("Multiplied product: "+str(mult_product))
 
 	elif day == 2:
 		valid_passwords = 0
