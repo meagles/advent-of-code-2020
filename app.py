@@ -8,12 +8,44 @@ def open_puzzle_input(day):
 
 if __name__ == "__main__":
 
-	day = 4
-	puzzle = 2
+	day = 5
+	puzzle = 1
 
 	input = open_puzzle_input(day)
 
-	if day == 4:
+	if day == 5:
+		highest_seat_id = 0
+		all_seat_ids = []
+		for line in input:
+			front_back_info = line[0:7]
+			left_right_info = line[7:10]
+			front_back_binary = ""
+			left_right_binary = ""
+			for pos in range(7):
+				if front_back_info[pos] == "F":
+					front_back_binary += "0"
+				elif front_back_info[pos] == "B":
+					front_back_binary += "1"
+			for pos in range(3):
+				if left_right_info[pos] == "L":
+					left_right_binary += "0"
+				elif left_right_info[pos] == "R":
+					left_right_binary += "1"
+			row = int(front_back_binary,2)
+			column = int(left_right_binary,2)
+			seat_id = row * 8 + column
+			all_seat_ids.append(seat_id)
+			if seat_id > highest_seat_id:
+				highest_seat_id = seat_id
+		print("Highest seat id is: "+str(highest_seat_id))
+
+		prev_seat_id = None
+		for this_seat_id in sorted(all_seat_ids):
+			if prev_seat_id is not None and this_seat_id != prev_seat_id + 1:
+				print("We have seats "+str(this_seat_id)+" and "+str(prev_seat_id)+" with a seat between them")
+			prev_seat_id = this_seat_id
+
+	elif day == 4:
 		def validate_passport(puzzle, passport_fields, passport_data):
 			required_fields = ["byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid", "cid"]
 			missing_fields = [field for field in required_fields if field not in passport_fields]
