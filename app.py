@@ -20,8 +20,6 @@ if __name__ == "__main__":
 		for line in input:
 			if len(line) == 0:
 				answer_sum = answer_sum + len(group_yeses)
-				print(group_yeses)
-				print(answer_sum)
 				group_yeses = ''
 				new_group = True
 				continue
@@ -41,7 +39,7 @@ if __name__ == "__main__":
 					group_yeses = new_group_yeses
 		
 		answer_sum = answer_sum + len(group_yeses) # last set
-		print(answer_sum)
+		print("Sum: "+str(answer_sum))
 
 	elif day == 5:
 		highest_seat_id = 0
