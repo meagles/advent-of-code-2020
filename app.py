@@ -1,4 +1,4 @@
-import re
+import re #regex
 
 def open_puzzle_input(day):
     with open('./Day{}/input.txt'.format(day), 'r') as file:
@@ -8,12 +8,42 @@ def open_puzzle_input(day):
 
 if __name__ == "__main__":
 
-	day = 5
-	puzzle = 1
+	day = 6
+	puzzle = 2
 
 	input = open_puzzle_input(day)
 
-	if day == 5:
+	if day == 6:
+		group_yeses = ''
+		answer_sum = 0
+		new_group = True
+		for line in input:
+			if len(line) == 0:
+				answer_sum = answer_sum + len(group_yeses)
+				print(group_yeses)
+				print(answer_sum)
+				group_yeses = ''
+				new_group = True
+				continue
+			if puzzle == 1:
+				group_yeses = ''.join(set(group_yeses+line))
+			elif puzzle == 2:
+				if new_group:
+					new_group = False
+					group_yeses = line # at this point everyone has said yes
+					continue
+				else:
+					personset = set(line)
+					new_group_yeses = ''
+					for char in group_yeses:
+						if char in personset:
+							new_group_yeses = new_group_yeses + char
+					group_yeses = new_group_yeses
+		
+		answer_sum = answer_sum + len(group_yeses) # last set
+		print(answer_sum)
+
+	elif day == 5:
 		highest_seat_id = 0
 		all_seat_ids = []
 		for line in input:
