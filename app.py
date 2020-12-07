@@ -9,7 +9,7 @@ def open_puzzle_input(day):
 if __name__ == "__main__":
 
 	day = 7
-	puzzle = 1
+	puzzle = 2
 
 	input = open_puzzle_input(day)
 
@@ -46,20 +46,30 @@ if __name__ == "__main__":
 						seen_colors.append(this_color)
 			return False
 
-		# look for shiny gold in each bag
-		num_valid = 0
-		for bag_color in rules:
-			if check_bag_contains(rules, bag_color, 'shiny gold'):
-				num_valid = num_valid + 1
-				print(bag_color+" is valid")
+		def count_bag_contents(rules, this_bag_color):
+			num_bags = 1 # we have this bag at least
+			contents_dict = rules[this_bag_color]
+			for color in contents_dict:
+				if color == "no other":
+					return num_bags
+				else:
+					num_outer_bags = contents_dict[color]
+					num_inner_bags = count_bag_contents(rules, color)
+					num_bags = num_bags + (num_outer_bags * num_inner_bags)
+			return num_bags
 
-		print("Total valid: "+str(num_valid))
+		if puzzle == 1:
+			# look for shiny gold in each bag
+			num_valid = 0
+			for bag_color in rules:
+				if check_bag_contains(rules, bag_color, 'shiny gold'):
+					num_valid = num_valid + 1
+					print(bag_color+" is valid")
 
-
-			
-
-				
-
+			print("Total valid: "+str(num_valid))
+		elif puzzle == 2:
+			gold_bag_contents = count_bag_contents(rules, 'shiny gold') - 1 # don't count the gold bag
+			print("Gold bag contains "+str(gold_bag_contents)+" bags")
 
 	elif day == 6:
 		group_yeses = ''
