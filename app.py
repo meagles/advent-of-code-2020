@@ -8,12 +8,75 @@ def open_puzzle_input(day):
 
 if __name__ == "__main__":
 
-	day = 6
-	puzzle = 2
+	day = 7
+	puzzle = 1
 
 	input = open_puzzle_input(day)
 
-	if day == 6:
+	if day == 7:
+		# create rules dictionary
+		rules = {}
+		for line in input:
+			line_parts = line.split(" bags contain ")
+			outer_color = line_parts[0]
+			inner_colors = line_parts[1].split(', ')
+			rules[outer_color] = {}
+			for this_bag in inner_colors:
+				num_color = this_bag[0:(this_bag.find(' bag'))]
+				inner_color = num_color.lstrip('1234567890 ')
+				inner_number = num_color.split(" ")[0]
+				if inner_number == 'no':
+					inner_number = 0
+				rules[outer_color][inner_color] = int(inner_number)
+		
+		def check_bag_valid(rules, outer_color, desired_color, seen_colors=[]):
+			possible_contained_colors = rules[outer_color]
+			for this_color in possible_contained_colors:
+				if this_color in seen_colors:
+					return False
+				elif this_color == "no other":
+					return False
+				elif this_color == desired_color:
+					print (outer_color+" can contain "+desired_color)
+					return True
+				elif this_color not in seen_colors: 
+					# not the color we are looking for, but could it contain that color?
+					if check_bag_valid(rules, this_color, desired_color, seen_colors):
+						return True
+					else:
+						seen_colors.append(this_color)
+			return False
+
+		num_valid = 0
+		valid_colors = []
+		for this_color in rules:
+			this_color_contents = rules[this_color]
+			for inner_color in this_color_contents:
+				if inner_color == 'shiny gold':
+					valid_colors.append(this_color)
+			# if check_bag_valid(rules, this_color, 'shiny gold'):
+			# 	print(this_color+" bags are okay!")
+			# 	num_valid = num_valid + 1
+
+		for this_color in rules:
+			this_color_found = False
+			if this_color in valid_colors:
+				continue
+			this_color_contents = rules[this_color]
+			for inner_color in this_color_contents:
+				if not this_color_found and inner_color in valid_colors:
+					valid_colors.append(this_color)
+					this_color_found = False\
+
+		print(len(valid_colors))
+
+
+			
+
+				
+
+
+	elif day == 6:
 		group_yeses = ''
 		answer_sum = 0
 		new_group = True
