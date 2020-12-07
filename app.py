@@ -28,47 +28,32 @@ if __name__ == "__main__":
 				if inner_number == 'no':
 					inner_number = 0
 				rules[outer_color][inner_color] = int(inner_number)
+
+		# create 
 		
-		def check_bag_valid(rules, outer_color, desired_color, seen_colors=[]):
-			possible_contained_colors = rules[outer_color]
-			for this_color in possible_contained_colors:
-				if this_color in seen_colors:
-					return False
-				elif this_color == "no other":
+		def check_bag_contains(rules, outer_color, desired_color, seen_colors=[]):
+			contents_dict = rules[outer_color]
+			for this_color in contents_dict:
+				if this_color == "no other":
 					return False
 				elif this_color == desired_color:
-					print (outer_color+" can contain "+desired_color)
 					return True
 				elif this_color not in seen_colors: 
 					# not the color we are looking for, but could it contain that color?
-					if check_bag_valid(rules, this_color, desired_color, seen_colors):
+					if check_bag_contains(rules, this_color, desired_color, seen_colors):
 						return True
 					else:
 						seen_colors.append(this_color)
 			return False
 
+		# look for shiny gold in each bag
 		num_valid = 0
-		valid_colors = []
-		for this_color in rules:
-			this_color_contents = rules[this_color]
-			for inner_color in this_color_contents:
-				if inner_color == 'shiny gold':
-					valid_colors.append(this_color)
-			# if check_bag_valid(rules, this_color, 'shiny gold'):
-			# 	print(this_color+" bags are okay!")
-			# 	num_valid = num_valid + 1
+		for bag_color in rules:
+			if check_bag_contains(rules, bag_color, 'shiny gold'):
+				num_valid = num_valid + 1
+				print(bag_color+" is valid")
 
-		for this_color in rules:
-			this_color_found = False
-			if this_color in valid_colors:
-				continue
-			this_color_contents = rules[this_color]
-			for inner_color in this_color_contents:
-				if not this_color_found and inner_color in valid_colors:
-					valid_colors.append(this_color)
-					this_color_found = False\
-
-		print(len(valid_colors))
+		print("Total valid: "+str(num_valid))
 
 
 			
