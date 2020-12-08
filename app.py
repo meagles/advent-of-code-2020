@@ -9,33 +9,80 @@ def open_puzzle_input(day):
 if __name__ == "__main__":
 
 	day = 8
-	puzzle = 1
+	puzzle = 2
 
 	input = open_puzzle_input(day)
 
 	if day == 8:
-		keep_running = True
-		accumulator = 0
-		current_row = 0
-		executed_rows = []
+		if puzzle == 2:
+			# we're gonna try this with slightly modified inputs until we get an answer
+			for index_to_modify in range(len(input)):
+				if input[index_to_modify][0:3] != "acc":
+					# print("Trying with changed row "+str(index_to_modify+1))
+					this_input = input.copy()
+					line_to_modify = this_input[index_to_modify]
+					if line_to_modify[:3] == "jmp":
+						modified_line = "nop"+line_to_modify[3:len(line_to_modify)]
+					elif line_to_modify[:3] == "nop":
+						modified_line = "jmp"+line_to_modify[3:len(line_to_modify)]
+					this_input[index_to_modify] = modified_line
 
-		while keep_running:
-			line = input[current_row]
-			# print("Running row "+str(current_row)+", accumulator at "+str(accumulator))
-			if current_row in executed_rows:
-				break
-			else:
-				executed_rows.append(current_row)
-			line_parts = line.split(" ")
-			if line_parts[0] == "acc":
-				accumulator = accumulator + int(line_parts[1])
-				current_row = current_row + 1
-			elif line_parts[0] == "jmp":
-				current_row = current_row + int(line_parts[1])
-			elif line_parts[0] == "nop":
-				current_row = current_row + 1
-				continue
-		print("Accumulator is at "+str(accumulator))
+					keep_running = True
+					accumulator = 0
+					current_row = 0
+					executed_rows = []
+
+					while keep_running:
+						if current_row > len(this_input) or current_row in executed_rows:
+							# print("+ infinite loop or out of bounds.")
+							break
+						elif current_row == len(this_input):
+							print("Found infinite loop fix! Changed row "+str(index_to_modify+1))
+							keep_running = False
+							break
+						else:
+							executed_rows.append(current_row)
+						line = this_input[current_row]
+						# print("Running row "+str(current_row)+": "+line)
+						line_parts = line.split(" ")
+						if line_parts[0] == "acc":
+							accumulator = accumulator + int(line_parts[1])
+							current_row = current_row + 1
+						elif line_parts[0] == "jmp":
+							current_row = current_row + int(line_parts[1])
+						elif line_parts[0] == "nop":
+							current_row = current_row + 1
+							continue
+					if not keep_running:
+						print("++++++Accumulator is at "+str(accumulator))
+
+		elif puzzle == 1:
+			print('aoeu')
+			keep_running = True
+			accumulator = 0
+			current_row = 0
+			executed_rows = []
+
+			while keep_running:
+				line = input[current_row]
+				print("Running row "+str(current_row)+" (accumulator at "+str(accumulator)+"): "+line)
+				if current_row in executed_rows:
+					break
+				else:
+					executed_rows.append(current_row)
+				line_parts = line.split(" ")
+				if line_parts[0] == "acc":
+					accumulator = accumulator + int(line_parts[1])
+					current_row = current_row + 1
+				elif line_parts[0] == "jmp":
+					current_row = current_row + int(line_parts[1])
+				elif line_parts[0] == "nop":
+					current_row = current_row + 1
+					continue
+			print("Accumulator is at "+str(accumulator))
+				
+			
+		
 
 	elif day == 7:
 		# create rules dictionary
