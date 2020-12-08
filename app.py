@@ -8,12 +8,36 @@ def open_puzzle_input(day):
 
 if __name__ == "__main__":
 
-	day = 7
-	puzzle = 2
+	day = 8
+	puzzle = 1
 
 	input = open_puzzle_input(day)
 
-	if day == 7:
+	if day == 8:
+		keep_running = True
+		accumulator = 0
+		current_row = 0
+		executed_rows = []
+
+		while keep_running:
+			line = input[current_row]
+			# print("Running row "+str(current_row)+", accumulator at "+str(accumulator))
+			if current_row in executed_rows:
+				break
+			else:
+				executed_rows.append(current_row)
+			line_parts = line.split(" ")
+			if line_parts[0] == "acc":
+				accumulator = accumulator + int(line_parts[1])
+				current_row = current_row + 1
+			elif line_parts[0] == "jmp":
+				current_row = current_row + int(line_parts[1])
+			elif line_parts[0] == "nop":
+				current_row = current_row + 1
+				continue
+		print("Accumulator is at "+str(accumulator))
+
+	elif day == 7:
 		# create rules dictionary
 		rules = {}
 		for line in input:
