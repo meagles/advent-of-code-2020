@@ -8,12 +8,42 @@ def open_puzzle_input(day):
 
 if __name__ == "__main__":
 
-	day = 8
+	day = 9
 	puzzle = 2
 
 	input = open_puzzle_input(day)
 
-	if day == 8:
+	if day == 9:
+		if puzzle == 1:
+			previous_nums = []
+			preamble_length = 25
+			for line_num in range(len(input)):
+				if line_num < preamble_length:
+					print("Still in preamble")
+				else:
+					value = input[line_num]
+					previous_nums = input[(line_num-preamble_length):(line_num)]
+					for preceding_pos in range(line_num-preamble_length, line_num):
+						if (str(int(value) - int(input[preceding_pos]))) in previous_nums:
+							# print("Found sum for "+str(value)+": "+str(input[preceding_pos])+" and "+str(int(value) - int(input[preceding_pos])))
+							break
+						elif preceding_pos == line_num-1:
+							print("Could not find "+str(value))
+		elif puzzle == 2:
+			desired_sum = 1639024365
+			for line_num in range(len(input)):
+				ongoing_sum = 0
+				nums = []
+				sum_line_num = int(line_num)
+				while ongoing_sum < desired_sum:
+					nums.append(int(input[sum_line_num]))
+					ongoing_sum = ongoing_sum + int(input[sum_line_num])
+					sum_line_num = sum_line_num + 1
+				if ongoing_sum == desired_sum:
+					print("Row "+str(line_num)+" to "+str(sum_line_num-1))
+					print(sorted(nums))
+
+	elif day == 8:
 		if puzzle == 2:
 			# we're gonna try this with slightly modified inputs until we get an answer
 			for index_to_modify in range(len(input)):
@@ -80,9 +110,6 @@ if __name__ == "__main__":
 					current_row = current_row + 1
 					continue
 			print("Accumulator is at "+str(accumulator))
-				
-			
-		
 
 	elif day == 7:
 		# create rules dictionary
@@ -100,8 +127,8 @@ if __name__ == "__main__":
 					inner_number = 0
 				rules[outer_color][inner_color] = int(inner_number)
 
-		# create 
-		
+		# create
+
 		def check_bag_contains(rules, outer_color, desired_color, seen_colors=[]):
 			contents_dict = rules[outer_color]
 			for this_color in contents_dict:
@@ -109,7 +136,7 @@ if __name__ == "__main__":
 					return False
 				elif this_color == desired_color:
 					return True
-				elif this_color not in seen_colors: 
+				elif this_color not in seen_colors:
 					# not the color we are looking for, but could it contain that color?
 					if check_bag_contains(rules, this_color, desired_color, seen_colors):
 						return True
@@ -166,7 +193,7 @@ if __name__ == "__main__":
 						if char in personset:
 							new_group_yeses = new_group_yeses + char
 					group_yeses = new_group_yeses
-		
+
 		answer_sum = answer_sum + len(group_yeses) # last set
 		print("Sum: "+str(answer_sum))
 
@@ -230,7 +257,7 @@ if __name__ == "__main__":
 								number_centimeters = int(this_data[0:this_data.find('cm')])
 								if number_centimeters < 150 or number_centimeters > 193:
 									return False
-							else: # dealin' with imperialism	
+							else: # dealin' with imperialism
 								number_inches = int(this_data[0:this_data.find('in')])
 								if number_inches < 59 or number_inches > 76:
 									return False
@@ -244,7 +271,7 @@ if __name__ == "__main__":
 							print('pid')
 							return False
 					return True
-			else: 
+			else:
 				return False
 
 		valid_passports = 0
