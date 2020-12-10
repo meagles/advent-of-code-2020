@@ -8,12 +8,28 @@ def open_puzzle_input(day):
 
 if __name__ == "__main__":
 
-	day = 9
+	day = 10
 	puzzle = 2
 
 	input = open_puzzle_input(day)
 
-	if day == 9:
+	if day == 10:
+		int_input = []
+		for val in input:
+			int_input.append(int(val))
+		prev_joltage = 0
+		differences_1 = 0
+		differences_3 = 0
+		for joltage in sorted(int_input):
+			if joltage == prev_joltage + 1:
+				differences_1 = differences_1 + 1
+			elif joltage == prev_joltage + 3:
+				differences_3 = differences_3 + 1
+			prev_joltage = joltage
+		print(differences_1)
+		print(differences_3)
+
+	elif day == 9:
 		if puzzle == 1:
 			previous_nums = []
 			preamble_length = 25
