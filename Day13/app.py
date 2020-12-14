@@ -32,6 +32,7 @@ with open('./Day13/input.txt', 'r') as file:
 				print("You will wait "+str(shortest_time)+" minutes for the "+str(return_line)+" bus")
 				print(shortest_time * return_line)
 	print("Part 2")
+	# This implements the Chinese Remainder Theorem which I read about here: https://brilliant.org/wiki/chinese-remainder-theorem/
 	a_vals = []
 	n_vals = []
 	index = 0
