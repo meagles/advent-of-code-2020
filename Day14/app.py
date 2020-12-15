@@ -4,12 +4,16 @@ def find_floating_possibilities(binary_string_list, x_indices):
 		binary_string_list_0 = binary_string_list.copy()
 		binary_string_list_0[this_index] = '0'
 		vals_from_0 = find_floating_possibilities(binary_string_list_0, x_indices.copy())
-		vals_from_0.append(''.join(binary_string_list_0))
+		binary_string_0 = ''.join(binary_string_list_0)
+		if binary_string_0 not in vals_from_0:
+			vals_from_0.append(binary_string_0)
 
 		binary_string_list_1 = binary_string_list.copy()
 		binary_string_list_1[this_index] = '1'
 		vals_from_1 = find_floating_possibilities(binary_string_list_1, x_indices.copy())
-		vals_from_1.append(''.join(binary_string_list_1))
+		binary_string_1 = ''.join(binary_string_list_1)
+		if binary_string_1 not in vals_from_1:
+			vals_from_1.append(binary_string_1)
 
 		return vals_from_0+vals_from_1
 	else:
@@ -60,9 +64,10 @@ for line in splitData:
 		memory_value = int(line_parts[1])
 		for index in change_to_1_digits:
 			memory_address_chars[index] = '1'
-		floating_possibilities = find_floating_possibilities(memory_address_chars, float_digits)
+		floating_possibilities = find_floating_possibilities(memory_address_chars, float_digits.copy())
 		for memory_to_write in floating_possibilities:
 			memory_dict[int(memory_to_write, 2)] = memory_value
+	# input('')
 
 print(memory_dict)
 print("Sum of all memory: "+str(sum(memory_dict.values())))
